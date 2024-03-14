@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Sat Jan  7 19:01:08 2023
 
@@ -37,23 +36,25 @@ import numpy.random as rnd
 def f(x):  # f can be any probability distribution proportional to the probability distribution of interest
     return np.exp(-(x-3)**2)
 
-#First we draw a sample , 
-#  and initialise
-x0=rnd.uniform(-10,10)
-N=100000
-samples=np.arange(N,dtype=np.float)
-samples[0]=x0
-#Then we generate a candidate from a distribution q(x_t|x_{t-1}) and test to see if we accept or reject the new value
-# accoridng to the Metropolis-Hastings algorithm. 
-# In this case we choose a normal distribution centered at x_{t-1}.
+#First we draw a sample, and initialise
+x0 = rnd.uniform(-10,10)
+N = 100000
+samples = np.arange(N,dtype=float)
+samples[0] = x0
+
+"""
+We generate a candidate from a distribution q(x_t|x_{t-1}) and test to see 
+if we accept or reject the new value accoridng to the Metropolis-Hastings algorithm. 
+In this case we choose a normal distribution centered at x_{t-1}.
+"""
 for t in range(0,N-1):
-    xt=rnd.normal(loc=samples[t],size=1) #generate candidate
-    alpha=f(xt)/f(samples[t])   #compute acceptance ratio as quotient of distribution
-    u=rnd.uniform()
-    if u<=alpha:    # accept new point with probability alpha
-        samples[t+1]=xt
+    xt = rnd.normal(loc=samples[t],size=1) #generate candidate
+    alpha = f(xt) / f(samples[t])   #compute acceptance ratio as quotient of distribution
+    u = rnd.uniform()
+    if u <= alpha:    # accept new point with probability alpha
+        samples[t+1] = xt
     else:
-        samples[t+1]=samples[t]
+        samples[t+1] = samples[t]
 
 print(samples)
 
